@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "427504337235",
+    "project_id": "spendwell-7c25b",
+    "storage_bucket": "spendwell-7c25b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:427504337235:android:4bba02b5b1846d3c6c21a6",
+        "android_client_info": {
+          "package_name": "com.example.expense_tracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8DFAvYWV_oJr69d5vjsKvNs3iQVgwP3U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
