@@ -1,6 +1,6 @@
 {
-    "name": "expense_tracker",
-    "short_name": "expense_tracker",
+    "name": "spendwell",
+    "short_name": "spendwell",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

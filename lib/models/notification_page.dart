@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 
-class InsightsPage extends StatelessWidget {
+class NotificationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Insights'),
+        title: Text('Notification'),
       ),
       body: Center(
-        child: Text('This is the Insights page.'),
+        child: Text('Notification settings content goes here.'),
       ),
     );
   }

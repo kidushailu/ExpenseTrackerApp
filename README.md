@@ -1,4 +1,4 @@
-# expense_tracker
+# spendwell
 
 A new Flutter project.
 
