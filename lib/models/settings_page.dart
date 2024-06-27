@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'profile_page.dart';
-import 'notification_page.dart';
+import 'account_page.dart';
+import 'appearance_page.dart';
 import 'privacy_security_page.dart';
+import 'help_page.dart';
+import 'about_page.dart';
 
 
 class SettingsPage extends StatelessWidget {
@@ -14,20 +16,11 @@ class SettingsPage extends StatelessWidget {
       body: ListView(
         children: [
           ListTile(
-            title: Text('Profile'),
+            title: Text('Account'),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ProfilePage()),
-              );
-            },
-          ),
-          ListTile(
-            title: Text('Notification'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => NotificationPage()),
+                MaterialPageRoute(builder: (context) => AccountPage()),
               );
             },
           ),
@@ -40,8 +33,36 @@ class SettingsPage extends StatelessWidget {
               );
             },
           ),
+          ListTile(
+            title: Text('Appearance'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AppearancePage()),
+              );
+            },
+          ),
+          ListTile(
+            title: Text('Help and Support'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HelpPage()),
+              );
+            },
+          ),
+          ListTile(
+            title: Text('About'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AboutPage()),
+              );
+            },
+          ),
         ],
       ),
     );
   }
 }
+
