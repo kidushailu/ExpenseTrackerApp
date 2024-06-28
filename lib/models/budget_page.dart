@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'add_expense_page.dart'; // Import your AddExpensePage
 
 class BudgetPage extends StatefulWidget {
   final Map<String, dynamic>? budgetData;
@@ -52,11 +53,39 @@ class _BudgetPageState extends State<BudgetPage> {
     Navigator.pop(context, {'action': 'delete'});
   }
 
+  void _handleExpenseSave(Map<String, dynamic> expenseData) {
+    double currentExpenses = double.tryParse(_expensesController.text) ?? 0.0;
+    double expenseAmount = expenseData['amount'];
+
+    // Update expenses and recalculate remaining amount
+    setState(() {
+      _expensesController.text = (currentExpenses + expenseAmount).toString();
+      _calculateRemainingAmount(); // Recalculate remaining amount after adding expense
+    });
+  }
+
+  Future<void> _navigateToAddExpense() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AddExpensePage()),
+    );
+
+    if (result != null && result['action'] == 'save') {
+      _handleExpenseSave(result['data']);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.budgetData == null ? 'Set Budget' : 'Edit Budget'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: _navigateToAddExpense,
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
