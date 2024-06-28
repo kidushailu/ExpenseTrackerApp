@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../registration_page.dart'; // Ensure the correct import path
 
 class AccountPage extends StatelessWidget {
   @override
@@ -41,7 +42,6 @@ class AccountPage extends StatelessWidget {
               leading: Icon(Icons.logout),
               title: Text('Logout'),
               onTap: () {
-                // Add logout functionality
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -58,10 +58,11 @@ class AccountPage extends StatelessWidget {
                         TextButton(
                           child: Text('Logout'),
                           onPressed: () {
-                            // Perform logout operation
-                            Navigator.of(context).pop();
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(builder: (context) => LoginPage()),
+                            Navigator.of(context).pop(); // Close the dialog
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(builder: (context) => RegistrationPage()),
+                              (Route<dynamic> route) => false,
                             );
                           },
                         ),
@@ -81,13 +82,12 @@ class AccountPage extends StatelessWidget {
 class AccountDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Replace with actual account details logic
     return Scaffold(
       appBar: AppBar(
         title: Text('Account Details'),
       ),
       body: Center(
-        child: Text('User account details will be shown here.'),
+        child: Text('Account details content goes here.'),
       ),
     );
   }
@@ -146,20 +146,6 @@ class UpdateAccountPage extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class LoginPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-      ),
-      body: Center(
-        child: Text('Login page content goes here.'),
       ),
     );
   }
