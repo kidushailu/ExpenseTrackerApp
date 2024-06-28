@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
-
 class GoalPage extends StatefulWidget {
+  final Map<String, dynamic>? goalData;
+
+  GoalPage({this.goalData});
+
   @override
   _GoalPageState createState() => _GoalPageState();
 }
-
 
 class _GoalPageState extends State<GoalPage> {
   final _formKey = GlobalKey<FormState>();
@@ -15,12 +17,38 @@ class _GoalPageState extends State<GoalPage> {
   String? _completionUnit = 'Days';
   final List<String> _completionUnits = ['Days', 'Weeks', 'Months'];
 
+  @override
+  void initState() {
+    super.initState();
+    if (widget.goalData != null) {
+      _titleController.text = widget.goalData!['title'];
+      _amountController.text = widget.goalData!['amount'].toString();
+      _completionController.text = widget.goalData!['completionValue'].toString();
+      _completionUnit = widget.goalData!['completionUnit'];
+    }
+  }
+
+  void _saveGoal() {
+    if (_formKey.currentState?.validate() ?? false) {
+      Map<String, dynamic> goalData = {
+        'title': _titleController.text,
+        'amount': double.parse(_amountController.text),
+        'completionValue': int.parse(_completionController.text),
+        'completionUnit': _completionUnit,
+      };
+      Navigator.pop(context, {'action': 'save', 'data': goalData});
+    }
+  }
+
+  void _deleteGoal() {
+    Navigator.pop(context, {'action': 'delete'});
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Set Goal'),
+        title: Text(widget.goalData == null ? 'Set Goal' : 'Edit Goal'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -86,24 +114,23 @@ class _GoalPageState extends State<GoalPage> {
               ),
               SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    Map<String, dynamic> goalData = {
-                      'title': _titleController.text,
-                      'amount': double.parse(_amountController.text),
-                    };
-                    Navigator.pop(context, goalData);
-                  }
-                },
-                child: Text('Set New Goal'),
+                onPressed: _saveGoal,
+                child: Text(widget.goalData == null ? 'Set New Goal' : 'Update Goal'),
               ),
+              if (widget.goalData != null) ...[
+                SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: _deleteGoal,
+                  child: Text('Delete Goal'),
+                  style: ElevatedButton.styleFrom(primary: Colors.red),
+                ),
+              ],
             ],
           ),
         ),
       ),
     );
   }
-
 
   @override
   void dispose() {
