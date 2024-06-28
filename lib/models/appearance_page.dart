@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../main.dart';
 
 class AppearancePage extends StatefulWidget {
   @override
@@ -6,11 +8,12 @@ class AppearancePage extends StatefulWidget {
 }
 
 class _AppearancePageState extends State<AppearancePage> {
-  bool isDarkMode = false;
-  Color primaryColor = Colors.blue;
-
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    bool isDarkMode = themeProvider.getTheme().brightness == Brightness.dark;
+    Color primaryColor = themeProvider.getTheme().primaryColor;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Appearance Settings'),
@@ -29,10 +32,7 @@ class _AppearancePageState extends State<AppearancePage> {
               title: Text('Dark Mode'),
               value: isDarkMode,
               onChanged: (bool value) {
-                setState(() {
-                  isDarkMode = value;
-                });
-                // Add logic to apply dark mode
+                themeProvider.toggleDarkMode(value);
               },
             ),
             SizedBox(height: 16),
@@ -48,30 +48,21 @@ class _AppearancePageState extends State<AppearancePage> {
                   color: Colors.blue,
                   selected: primaryColor == Colors.blue,
                   onSelect: () {
-                    setState(() {
-                      primaryColor = Colors.blue;
-                    });
-                    // Add logic to apply primary color
+                    themeProvider.changePrimaryColor(Colors.blue);
                   },
                 ),
                 ColorOption(
                   color: Colors.red,
                   selected: primaryColor == Colors.red,
                   onSelect: () {
-                    setState(() {
-                      primaryColor = Colors.red;
-                    });
-                    // Add logic to apply primary color
+                    themeProvider.changePrimaryColor(Colors.red);
                   },
                 ),
                 ColorOption(
                   color: Colors.green,
                   selected: primaryColor == Colors.green,
                   onSelect: () {
-                    setState(() {
-                      primaryColor = Colors.green;
-                    });
-                    // Add logic to apply primary color
+                    themeProvider.changePrimaryColor(Colors.green);
                   },
                 ),
                 // Add more colors as needed
