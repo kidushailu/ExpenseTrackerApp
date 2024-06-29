@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 
+
 class AddExpensePage extends StatefulWidget {
-  final Map<String, dynamic>? expenseData;
-
-  AddExpensePage({this.expenseData});
-
   @override
   _AddExpensePageState createState() => _AddExpensePageState();
 }
+
 
 class _AddExpensePageState extends State<AddExpensePage> {
   final _formKey = GlobalKey<FormState>();
@@ -17,38 +15,12 @@ class _AddExpensePageState extends State<AddExpensePage> {
   String? _duration = 'Days';
   final List<String> _durations = ['Days', 'Weeks', 'Months'];
 
-  @override
-  void initState() {
-    super.initState();
-    if (widget.expenseData != null) {
-      _nameController.text = widget.expenseData!['name'];
-      _amountController.text = widget.expenseData!['amount'].toString();
-      _duration = widget.expenseData!['duration'];
-      _durationValueController.text = widget.expenseData!['durationValue'].toString();
-    }
-  }
-
-  void _saveExpense() {
-    if (_formKey.currentState?.validate() ?? false) {
-      Map<String, dynamic> expenseData = {
-        'name': _nameController.text,
-        'amount': double.parse(_amountController.text),
-        'duration': _duration,
-        'durationValue': int.parse(_durationValueController.text),
-      };
-      Navigator.pop(context, {'action': 'save', 'data': expenseData});
-    }
-  }
-
-  void _deleteExpense() {
-    Navigator.pop(context, {'action': 'delete'});
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.expenseData == null ? 'Add Expense' : 'Edit Expense'),
+        title: Text('Add Expense'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -114,23 +86,26 @@ class _AddExpensePageState extends State<AddExpensePage> {
               ),
               SizedBox(height: 20),
               ElevatedButton(
-                onPressed: _saveExpense,
-                child: Text(widget.expenseData == null ? 'Add Expense' : 'Update Expense'),
+                onPressed: () {
+                  if (_formKey.currentState?.validate() ?? false) {
+                    Map<String, dynamic> expenseData = {
+                      'name': _nameController.text,
+                      'amount': double.parse(_amountController.text),
+                      'duration': _duration,
+                      'durationValue': int.parse(_durationValueController.text),
+                    };
+                    Navigator.pop(context, expenseData);
+                  }
+                },
+                child: Text('Add Expense'),
               ),
-              if (widget.expenseData != null) ...[
-                SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: _deleteExpense,
-                  child: Text('Delete Expense'),
-                  style: ElevatedButton.styleFrom(primary: Colors.red),
-                ),
-              ],
             ],
           ),
         ),
       ),
     );
   }
+
 
   @override
   void dispose() {
