@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'registration_page.dart';
 import 'database_helper.dart';
 
-
 class CreateAccountPage extends StatefulWidget {
   @override
   _CreateAccountPageState createState() => _CreateAccountPageState();
 }
-
 
 class _CreateAccountPageState extends State<CreateAccountPage> {
   final _formKey = GlobalKey<FormState>();
@@ -18,7 +16,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final DatabaseHelper _databaseHelper = DatabaseHelper();
-
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +93,9 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a password';
-                  } else if (!RegExp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,15}$').hasMatch(value)) {
+                  } else if (!RegExp(
+                          r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,15}$')
+                      .hasMatch(value)) {
                     return 'Password must be alphanumeric and 8-15 characters long';
                   }
                   return null;
@@ -137,7 +136,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
       ),
     );
   }
-
 
   @override
   void dispose() {

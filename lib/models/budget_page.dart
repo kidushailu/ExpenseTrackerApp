@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'add_expense_page.dart'; // Import your AddExpensePage
+import '../helpers/bottom_bar.dart';
 
 class BudgetPage extends StatefulWidget {
   final Map<String, dynamic>? budgetData;
@@ -139,20 +140,22 @@ class _BudgetPageState extends State<BudgetPage> {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _saveBudget,
-                child: Text(widget.budgetData == null ? 'Set Budget' : 'Update Budget'),
+                child: Text(
+                    widget.budgetData == null ? 'Set Budget' : 'Update Budget'),
               ),
               if (widget.budgetData != null) ...[
                 SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: _deleteBudget,
                   child: Text('Delete Budget'),
-                  style: ElevatedButton.styleFrom(primary: Colors.red),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                 ),
               ],
             ],
           ),
         ),
       ),
+      bottomNavigationBar: BottomBar(),
     );
   }
 

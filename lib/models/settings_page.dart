@@ -4,7 +4,8 @@ import 'appearance_page.dart';
 import 'privacy_security_page.dart';
 import 'help_page.dart';
 import 'about_page.dart';
-
+import '../helpers/bottom_bar.dart';
+import '../helpers/settings_list.dart';
 
 class SettingsPage extends StatelessWidget {
   @override
@@ -15,54 +16,18 @@ class SettingsPage extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          ListTile(
-            title: Text('Account'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AccountPage()),
-              );
-            },
+          SettingsList(
+            page: AccountDetailsPage(),
+            title: 'Account',
           ),
-          ListTile(
-            title: Text('Privacy and Security'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => PrivacySecurityPage()),
-              );
-            },
-          ),
-          ListTile(
-            title: Text('Appearance'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AppearancePage()),
-              );
-            },
-          ),
-          ListTile(
-            title: Text('Help and Support'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HelpPage()),
-              );
-            },
-          ),
-          ListTile(
-            title: Text('About'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AboutPage()),
-              );
-            },
-          ),
+          SettingsList(
+              page: PrivacySecurityPage(), title: 'Privacy and Security'),
+          SettingsList(page: AppearancePage(), title: 'Appearance'),
+          SettingsList(page: HelpPage(), title: 'Help and Support'),
+          SettingsList(page: AboutPage(), title: 'About'),
         ],
       ),
+      bottomNavigationBar: BottomBar(),
     );
   }
 }
-

@@ -2,38 +2,29 @@ import 'package:flutter/material.dart';
 import 'registration_page.dart';
 import 'models/add_expense_page.dart';
 import 'models/budget_page.dart';
-import 'models/goal_page.dart';
 import 'models/insight_page.dart';
 import 'models/settings_page.dart';
-import 'database_helper.dart';
-
+//import 'database_helper.dart';
+import 'helpers/dash_buttons.dart';
+import 'helpers/bottom_bar.dart';
 
 class DashboardPage extends StatefulWidget {
-  final String username;
-
-
-  DashboardPage({required this.username});
-
-
   @override
   _DashboardPageState createState() => _DashboardPageState();
 }
 
-
 class _DashboardPageState extends State<DashboardPage> {
-  final DatabaseHelper _databaseHelper = DatabaseHelper();
+  //final DatabaseHelper _databaseHelper = DatabaseHelper();
   double? _budgetLimit;
   String? _goalTitle;
   double? _goalAmount;
   List<Map<String, dynamic>> _expenses = [];
-
 
   void _addExpense(Map<String, dynamic> expenseData) {
     setState(() {
       _expenses.add(expenseData);
     });
   }
-
 
   void _addGoal(Map<String, dynamic> goalData) {
     setState(() {
@@ -42,13 +33,11 @@ class _DashboardPageState extends State<DashboardPage> {
     });
   }
 
-
   void _addBudget(Map<String, dynamic> budgetData) {
     setState(() {
       _budgetLimit = budgetData['limit'];
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +49,7 @@ class _DashboardPageState extends State<DashboardPage> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'Hello ${widget.username}',
+                'Hello!',
                 style: TextStyle(fontSize: 18.0),
               ),
             ),
@@ -110,63 +99,26 @@ class _DashboardPageState extends State<DashboardPage> {
                 }).toList(),
               ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                final expenseData = await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddExpensePage()),
-                );
-                if (expenseData != null) {
-                  _addExpense(expenseData);
-                }
-              },
-              child: Text('Add Expense'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => InsightPage()),
-                );
-              },
-              child: Text('Insights'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                final budgetData = await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => BudgetPage()),
-                );
-                if (budgetData != null) {
-                  _addBudget(budgetData);
-                }
-              },
-              child: Text('Budget'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                final goalData = await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => GoalPage()),
-                );
-                if (goalData != null) {
-                  _addGoal(goalData);
-                }
-              },
-              child: Text('Goal'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SettingsPage()),
-                );
-              },
-              child: Text('Settings'),
-            ),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+              DashBoardButton(
+                  page: AddExpensePage(),
+                  title: "Add Expense",
+                  icon: Icons.add),
+              DashBoardButton(
+                  page: InsightPage(),
+                  title: "Insights",
+                  icon: Icons.pie_chart),
+              DashBoardButton(
+                  page: BudgetPage(), title: "Budget", icon: Icons.wallet),
+              DashBoardButton(
+                  page: SettingsPage(),
+                  title: "Settings",
+                  icon: Icons.settings),
+            ]),
           ],
         ),
       ),
+      bottomNavigationBar: BottomBar(),
     );
   }
 }

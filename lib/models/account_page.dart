@@ -61,7 +61,8 @@ class AccountPage extends StatelessWidget {
                             Navigator.of(context).pop(); // Close the dialog
                             Navigator.pushAndRemoveUntil(
                               context,
-                              MaterialPageRoute(builder: (context) => RegistrationPage()),
+                              MaterialPageRoute(
+                                  builder: (context) => RegistrationPage()),
                               (Route<dynamic> route) => false,
                             );
                           },

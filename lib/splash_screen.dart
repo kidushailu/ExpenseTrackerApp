@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'registration_page.dart';
 
-
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
-
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
@@ -15,7 +13,6 @@ class _SplashScreenState extends State<SplashScreen> {
     _navigateToRegistration();
   }
 
-
   _navigateToRegistration() async {
     await Future.delayed(Duration(seconds: 3), () {});
     Navigator.pushReplacement(
@@ -23,7 +20,6 @@ class _SplashScreenState extends State<SplashScreen> {
       MaterialPageRoute(builder: (context) => RegistrationPage()),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +34,6 @@ class _SplashScreenState extends State<SplashScreen> {
               width: 200,
               height: 200,
             ),
-            
           ],
         ),
       ),

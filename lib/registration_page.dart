@@ -3,18 +3,15 @@ import 'create_account_page.dart';
 import 'dashboard_page.dart';
 import 'database_helper.dart';
 
-
 class RegistrationPage extends StatefulWidget {
   @override
   _RegistrationPageState createState() => _RegistrationPageState();
 }
 
-
 class _RegistrationPageState extends State<RegistrationPage> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final DatabaseHelper _databaseHelper = DatabaseHelper();
-
 
   @override
   Widget build(BuildContext context) {
@@ -62,19 +59,21 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 onPressed: () async {
                   String username = _usernameController.text;
                   String password = _passwordController.text;
-                  Map<String, dynamic>? user = await _databaseHelper.getUser(username, password);
-                  
+                  Map<String, dynamic>? user =
+                      await _databaseHelper.getUser(username, password);
+
                   if (user != null) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DashboardPage(username: username),
+                        builder: (context) => DashboardPage(),
                       ),
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Please enter a valid username and password'),
+                        content:
+                            Text('Please enter a valid username and password'),
                       ),
                     );
                   }
@@ -86,7 +85,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CreateAccountPage()),
+                    MaterialPageRoute(
+                        builder: (context) => CreateAccountPage()),
                   );
                 },
                 child: Text('Create an Account'),
@@ -97,7 +97,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
       ),
     );
   }
-
 
   @override
   void dispose() {

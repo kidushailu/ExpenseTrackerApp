@@ -80,7 +80,8 @@ class ColorOption extends StatelessWidget {
   final bool selected;
   final VoidCallback onSelect;
 
-  ColorOption({required this.color, required this.selected, required this.onSelect});
+  ColorOption(
+      {required this.color, required this.selected, required this.onSelect});
 
   @override
   Widget build(BuildContext context) {

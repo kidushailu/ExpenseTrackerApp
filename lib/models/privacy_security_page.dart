@@ -89,4 +89,3 @@ class PrivacySecurityPage extends StatelessWidget {
     );
   }
 }
-
