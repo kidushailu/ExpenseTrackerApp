@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../helpers/expenses_list.dart';
 import '../database_helper.dart';
 import 'package:intl/intl.dart';
-import '../helpers/app_bar.dart';
 
 class AddExpensePage extends StatefulWidget {
   final Map<String, dynamic>? expenseData;

@@ -14,10 +14,11 @@ class BottomBar extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => DashboardPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const DashboardPage()),
                 );
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.home,
                 color: Colors.green,
               )),

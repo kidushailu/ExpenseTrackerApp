@@ -103,18 +103,21 @@ class DatabaseHelper {
 
   Future<List<Map<String, dynamic>>> getMonthlyExpenses() async {
     final db = await database;
-    DateTime now = DateTime.now();
-    String firstDayOfMonth = DateTime(now.year, now.month, 1).toIso8601String();
-    String firstDayOfNextMonth =
-        DateTime(now.year, now.month + 1, 1).toIso8601String();
+    final result = await db.rawQuery('''
+    SELECT category, SUM(amount) AS amount
+    FROM expenses
+    WHERE strftime('%Y-%m', date) = strftime('%Y-%m', 'now')
+    GROUP BY category
+  ''');
 
-    List<Map<String, dynamic>> expenses = await db.query(
-      'expenses',
-      where: 'date >= ? AND date < ?',
-      whereArgs: [firstDayOfMonth, firstDayOfNextMonth],
-    );
-
-    return expenses;
+    return result.map((row) {
+      final amount = (row['amount'] as double?) ??
+          0.0; // Ensure amount is not null and valid
+      return {
+        'category': row['category'],
+        'amount': amount,
+      };
+    }).toList();
   }
 
   Future<List<Map<String, dynamic>>> getExpensesBetweenDates(

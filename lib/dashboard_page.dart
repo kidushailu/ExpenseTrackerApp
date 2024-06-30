@@ -1,41 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:spendwell/helpers/bar_chart.dart';
 import 'registration_page.dart';
 import 'models/add_expense_page.dart';
 import 'models/budget_page.dart';
 import 'models/insight_page.dart';
 import 'models/settings_page.dart';
-//import 'database_helper.dart';
+import 'database_helper.dart';
 import 'helpers/dash_buttons.dart';
 import 'helpers/bottom_bar.dart';
 
 class DashboardPage extends StatefulWidget {
+  const DashboardPage({super.key});
+
   @override
   _DashboardPageState createState() => _DashboardPageState();
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  //final DatabaseHelper _databaseHelper = DatabaseHelper();
-  double? _budgetLimit;
-  String? _goalTitle;
-  double? _goalAmount;
-  List<Map<String, dynamic>> _expenses = [];
+  DatabaseHelper dbHelper = DatabaseHelper();
+  List<Map<String, dynamic>> expenses = [];
 
-  void _addExpense(Map<String, dynamic> expenseData) {
-    setState(() {
-      _expenses.add(expenseData);
-    });
+  @override
+  void initState() {
+    super.initState();
+    _fetchMonthlyExpenses();
   }
 
-  void _addGoal(Map<String, dynamic> goalData) {
+  Future<void> _fetchMonthlyExpenses() async {
+    List<Map<String, dynamic>> data = await dbHelper.getExpensesByCategory();
     setState(() {
-      _goalTitle = goalData['title'];
-      _goalAmount = goalData['amount'];
-    });
-  }
-
-  void _addBudget(Map<String, dynamic> budgetData) {
-    setState(() {
-      _budgetLimit = budgetData['limit'];
+      expenses = data;
     });
   }
 
@@ -43,10 +37,10 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dashboard'),
+        title: const Text('Dashboard'),
         actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Center(
               child: Text(
                 'Hello!',
@@ -55,7 +49,7 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ),
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             onPressed: () {
               Navigator.pushAndRemoveUntil(
                 context,
@@ -71,34 +65,11 @@ class _DashboardPageState extends State<DashboardPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Summary',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
-            if (_budgetLimit != null)
-              Text(
-                'Budget Spending Limit: \$$_budgetLimit',
-                style: TextStyle(fontSize: 18),
-              ),
-            SizedBox(height: 10),
-            if (_goalTitle != null && _goalAmount != null)
-              Text(
-                'Goal: $_goalTitle (\$$_goalAmount)',
-                style: TextStyle(fontSize: 18),
-              ),
-            SizedBox(height: 10),
-            if (_expenses.isNotEmpty)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: _expenses.map((expense) {
-                  return Text(
-                    '${expense['name']}: \$${expense['amount']} (${expense['durationValue']} ${expense['duration']})',
-                    style: TextStyle(fontSize: 18),
-                  );
-                }).toList(),
-              ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
               DashBoardButton(
                   page: AddExpensePage(),
@@ -115,6 +86,12 @@ class _DashboardPageState extends State<DashboardPage> {
                   title: "Settings",
                   icon: Icons.settings),
             ]),
+            const SizedBox(
+              height: 20,
+            ),
+            // expenses.isEmpty
+            //     ? const Text("No data.")
+            //     : BarChartWidget.withExpenseData(expenses),
           ],
         ),
       ),
