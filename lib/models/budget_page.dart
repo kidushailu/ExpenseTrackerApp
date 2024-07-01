@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'add_expense_page.dart'; // Import your AddExpensePage
 import '../helpers/bottom_bar.dart';
+import '../database_helper.dart';
 
 class BudgetPage extends StatefulWidget {
   final Map<String, dynamic>? budgetData;
@@ -36,6 +37,10 @@ class _BudgetPageState extends State<BudgetPage> {
     setState(() {
       _remainingAmount = income - (expenses + savings);
     });
+  }
+
+  void addBudget(budget) async {
+    await DatabaseHelper().insertBudget(budget);
   }
 
   void _saveBudget() {
@@ -80,7 +85,7 @@ class _BudgetPageState extends State<BudgetPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.budgetData == null ? 'Set Budget' : 'Edit Budget'),
+        title: Text('Set Budget'),
         actions: [
           IconButton(
             icon: Icon(Icons.add),
@@ -139,18 +144,12 @@ class _BudgetPageState extends State<BudgetPage> {
               ),
               SizedBox(height: 20),
               ElevatedButton(
-                onPressed: _saveBudget,
-                child: Text(
-                    widget.budgetData == null ? 'Set Budget' : 'Update Budget'),
+                onPressed: () {
+                  addBudget({'amount': _remainingAmount});
+                  _clearAllTextFields();
+                },
+                child: Text('Set Budget'),
               ),
-              if (widget.budgetData != null) ...[
-                SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: _deleteBudget,
-                  child: Text('Delete Budget'),
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                ),
-              ],
             ],
           ),
         ),
@@ -165,5 +164,11 @@ class _BudgetPageState extends State<BudgetPage> {
     _expensesController.dispose();
     _savingsController.dispose();
     super.dispose();
+  }
+
+  void _clearAllTextFields() {
+    _incomeController.clear();
+    _expensesController.clear();
+    _savingsController.clear();
   }
 }

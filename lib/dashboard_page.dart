@@ -7,6 +7,7 @@ import 'models/insight_page.dart';
 import 'models/settings_page.dart';
 import 'helpers/dash_buttons.dart';
 import 'helpers/bottom_bar.dart';
+import 'database_helper.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -16,6 +17,22 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  final DatabaseHelper _dbHelper = DatabaseHelper();
+  double limit = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchBudgetData();
+  }
+
+  Future<void> _fetchBudgetData() async {
+    Map<String, dynamic> budget = (await _dbHelper.getBudget()).last;
+    setState(() {
+      limit = budget['amount'];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,11 +66,18 @@ class _DashboardPageState extends State<DashboardPage> {
           const Text(
             'Summary',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
           ),
 
           // Insert info here
-          const SizedBox(height: 150),
-
+          const SizedBox(height: 20),
+          // if (_budget != null)
+          Text(
+            'Budget Spending Limit: \$${limit.toStringAsFixed(2)}',
+            style: TextStyle(fontSize: 18),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 20),
           Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
             DashBoardButton(
                 page: AddExpensePage(), title: "Add Expense", icon: Icons.add),

@@ -65,7 +65,7 @@ class _DailyExpenseChartState extends State<DailyExpenseChart> {
                   textAlign: TextAlign.center,
                 )
               : _buildBarChart(
-                  dailyExpenses, Theme.of(context).primaryColorDark)),
+                  dailyExpenses, Theme.of(context).primaryColorLight)),
     ]);
   }
 }

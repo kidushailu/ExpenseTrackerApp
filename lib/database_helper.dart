@@ -75,6 +75,11 @@ class DatabaseHelper {
     return result.isNotEmpty ? result.first : null;
   }
 
+  Future<int> insertBudget(Map<String, dynamic> budget) async {
+    Database db = await database;
+    return await db.insert('budget', budget);
+  }
+
   Future<int> insertExpense(Map<String, dynamic> expense) async {
     Database db = await database;
     return await db.insert('expenses', expense);
