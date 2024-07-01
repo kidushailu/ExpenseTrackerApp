@@ -31,36 +31,43 @@ class _ExpensesListState extends State<ExpensesList> {
   @override
   Widget build(BuildContext context) {
     return Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-      ElevatedButton(
-        onPressed: _clearExpenses,
-        child: Text('Delete all expenses'),
-      ),
       SizedBox(
-        height: 20,
+        height: 30,
       ),
       Text(
         "Expenses List",
         textAlign: TextAlign.left,
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
       ),
-      //Text("Category       Amount       Name       Date"),
       Container(
         height: 250,
         child: _expenses.isEmpty
             ? Center(child: Text('No expenses found'))
-            : ListView.builder(
+            : ListView.separated(
                 itemCount: _expenses.length,
-                itemExtent: 35,
+                separatorBuilder: (context, index) => Divider(
+                  height: 1,
+                  color: Colors.grey,
+                ),
                 itemBuilder: (context, index) {
                   final expense = _expenses[index];
-                  return Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Text(
-                      "${expense['category']}    \$${expense['amount'].toStringAsFixed(2)}    ${expense['name']}    ${expense['date']}",
-                      style: TextStyle(fontSize: 15),
+                  return ListTile(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                    leading: Text('•',
+                        style: TextStyle(
+                            fontSize: 24,
+                            color: Theme.of(context).dividerColor)),
+                    title: Text(
+                      "${expense['category']}  |  \$${expense['amount'].toStringAsFixed(2)}  |  ${expense['name']}  |  ${expense['date']}",
+                      style: TextStyle(fontSize: 14),
                     ),
                   );
                 },
               ),
+      ),
+      ElevatedButton(
+        onPressed: _clearExpenses,
+        child: Text('Delete all expenses'),
       ),
     ]);
   }

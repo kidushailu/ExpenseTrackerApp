@@ -121,12 +121,12 @@ class DatabaseHelper {
   }
 
   Future<List<Map<String, dynamic>>> getExpensesBetweenDates(
-      DateTime start, DateTime end) async {
+      String start, String end) async {
     Database db = await database;
     return await db.query(
       'expenses',
       where: 'date >= ? AND date <= ?',
-      whereArgs: [start.toIso8601String(), end.toIso8601String()],
+      whereArgs: [start, end],
     );
   }
 

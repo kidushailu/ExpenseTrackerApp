@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../database_helper.dart';
 import 'package:spendwell/helpers/bottom_bar.dart';
-import '../helpers/app_bar.dart';
 import '../helpers/pie_chart.dart';
 
 class InsightPage extends StatefulWidget {
@@ -23,6 +23,11 @@ class _InsightPageState extends State<InsightPage> {
     _calculateMonthlyTotals();
   }
 
+  String getDate(date) {
+    final DateFormat formatter = DateFormat('MM/dd/yyyy');
+    return formatter.format(date);
+  }
+
   Future<void> _fetchMonthlyExpenses() async {
     List<Map<String, dynamic>> data = await _dbHelper.getMonthlyExpenses();
     setState(() {
@@ -32,64 +37,73 @@ class _InsightPageState extends State<InsightPage> {
 
   Future<void> _calculateMonthlyTotals() async {
     DateTime now = DateTime.now();
-    DateTime firstDayCurrentMonth = DateTime(now.year, now.month, 1);
-    DateTime firstDayPreviousMonth = DateTime(now.year, now.month - 1, 1);
-    DateTime lastDayPreviousMonth = DateTime(now.year, now.month, 0);
+    String firstDayCurrentMonth = getDate(DateTime(now.year, now.month, 1));
+    String firstDayPreviousMonth =
+        getDate(DateTime(now.year, now.month - 1, 1));
+    String lastDayPreviousMonth = getDate(DateTime(now.year, now.month, 0));
+    String nowFormatted = getDate(DateTime.now());
 
-    List<Map<String, dynamic>> currentMonthExpenses =
-        await _dbHelper.getExpensesBetweenDates(firstDayCurrentMonth, now);
+    List<Map<String, dynamic>> currentMonthExpenses = await _dbHelper
+        .getExpensesBetweenDates(firstDayCurrentMonth, nowFormatted);
     List<Map<String, dynamic>> previousMonthExpenses = await _dbHelper
         .getExpensesBetweenDates(firstDayPreviousMonth, lastDayPreviousMonth);
 
     setState(() {
       _currentMonthTotal = _calculateTotalExpenses(currentMonthExpenses);
       _previousMonthTotal = _calculateTotalExpenses(previousMonthExpenses);
-      _percentChange =
-          ((_previousMonthTotal - _currentMonthTotal) / _currentMonthTotal) *
-              100;
+      if (_previousMonthTotal == 0 && _currentMonthTotal == 0) {
+        _percentChange = 0;
+      } else if (_previousMonthTotal == 0 && _currentMonthTotal > 0) {
+        _percentChange = 100;
+      } else {
+        _percentChange =
+            ((_currentMonthTotal - _previousMonthTotal) / _previousMonthTotal) *
+                100;
+      }
     });
   }
 
   double _calculateTotalExpenses(List<Map<String, dynamic>> expenses) {
-    return expenses.fold<double>(
-        0.0, (sum, item) => sum + (item['amount'] as double));
+    return expenses.fold<double>(0.0, (sum, item) => sum + (item['amount']));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HeaderBar(page: "Insights"),
-      body: ListView(
-        padding: const EdgeInsets.all(16.0),
+      appBar: AppBar(
+        title: const Text('Insights'),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            alignment: Alignment.center,
-            width: 350,
-            height: 35,
-            decoration: BoxDecoration(
-              color: Colors.green,
-              borderRadius: BorderRadius.circular(10),
+          Column(children: [
+            Text(
+              "Current Month Expenses: \$$_currentMonthTotal",
+              style: TextStyle(
+                fontSize: 20,
+              ),
             ),
-            child: Text("Current Month Expenses: \$$_currentMonthTotal"),
-          ),
-          SizedBox(height: 15),
-          _percentChange.isNegative
-              ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Icon(Icons.arrow_upward),
-                  Text(
-                    "${_percentChange.toStringAsFixed(2)}%",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  Text(" Up from \$$_previousMonthTotal"),
-                ])
-              : Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Icon(Icons.arrow_downward),
-                  Text(
-                    "${_percentChange.toStringAsFixed(2)}%",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  Text(" Down from \$$_previousMonthTotal"),
-                ]),
+            SizedBox(height: 15),
+            _percentChange.isNegative
+                ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Icon(Icons.arrow_downward),
+                    Text(
+                      "${_percentChange.toStringAsFixed(2)}%",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    Text(" Down from \$$_previousMonthTotal"),
+                  ])
+                : Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Icon(Icons.arrow_upward),
+                    Text(
+                      "${_percentChange.toStringAsFixed(2)}%",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    Text(" Up from \$$_previousMonthTotal"),
+                  ]),
+          ]),
           SizedBox(
             height: 25,
           ),

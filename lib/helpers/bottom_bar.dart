@@ -7,6 +7,7 @@ class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
@@ -18,9 +19,8 @@ class BottomBar extends StatelessWidget {
                       builder: (context) => const DashboardPage()),
                 );
               },
-              icon: const Icon(
+              icon: Icon(
                 Icons.home,
-                color: Colors.green,
               )),
           IconButton(
               onPressed: () {
@@ -31,7 +31,6 @@ class BottomBar extends StatelessWidget {
               },
               icon: Icon(
                 Icons.wallet,
-                color: Colors.green,
               )),
           IconButton(
               onPressed: () {
@@ -42,7 +41,6 @@ class BottomBar extends StatelessWidget {
               },
               icon: Icon(
                 Icons.account_circle_outlined,
-                color: Colors.green,
               ))
         ],
       ),

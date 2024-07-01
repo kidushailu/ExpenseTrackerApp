@@ -30,6 +30,15 @@ class ThemeProvider extends ChangeNotifier {
     return ThemeData(
       brightness: _isDarkMode ? Brightness.dark : Brightness.light,
       primarySwatch: createMaterialColor(_primaryColor),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+              iconColor:
+                  WidgetStatePropertyAll(createMaterialColor(_primaryColor)))),
+      appBarTheme: AppBarTheme(
+          color: createMaterialColor(_primaryColor),
+          iconTheme: IconThemeData(color: createMaterialColor(Colors.white)),
+          titleTextStyle: TextStyle(
+              color: createMaterialColor(Colors.white), fontSize: 25)),
     );
   }
 

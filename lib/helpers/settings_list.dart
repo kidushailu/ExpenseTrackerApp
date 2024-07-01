@@ -8,17 +8,25 @@ class SettingsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: ListTile(
-        leading: Icon(Icons.arrow_left),
-        title: Text(title),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => page),
-          );
-        },
-      ),
-    );
+    return Container(
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ListTile(
+              trailing: Icon(Icons.arrow_right),
+              title: Text(title),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => page),
+                );
+              },
+            ),
+            Divider(
+              height: 2,
+            )
+          ],
+        ));
   }
 }

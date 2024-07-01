@@ -14,19 +14,24 @@ class SettingsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Settings'),
       ),
-      body: ListView(
-        children: [
-          SettingsList(
-            page: AccountDetailsPage(),
-            title: 'Account',
-          ),
-          SettingsList(
-              page: PrivacySecurityPage(), title: 'Privacy and Security'),
-          SettingsList(page: AppearancePage(), title: 'Appearance'),
-          SettingsList(page: HelpPage(), title: 'Help and Support'),
-          SettingsList(page: AboutPage(), title: 'About'),
-        ],
-      ),
+      body: Container(
+          alignment: Alignment.center,
+          child: Column(
+            children: [
+              Divider(
+                height: 2,
+              ),
+              SettingsList(
+                page: AccountPage(),
+                title: 'Account',
+              ),
+              SettingsList(
+                  page: PrivacySecurityPage(), title: 'Privacy and Security'),
+              SettingsList(page: AppearancePage(), title: 'Appearance'),
+              SettingsList(page: HelpPage(), title: 'Help and Support'),
+              SettingsList(page: AboutPage(), title: 'About'),
+            ],
+          )),
       bottomNavigationBar: BottomBar(),
     );
   }

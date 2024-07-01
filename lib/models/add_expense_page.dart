@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../helpers/expenses_list.dart';
 import '../database_helper.dart';
 import 'package:intl/intl.dart';
+import '../helpers/bottom_bar.dart';
 
 class AddExpensePage extends StatefulWidget {
   final Map<String, dynamic>? expenseData;
@@ -27,15 +28,15 @@ class _AddExpensePageState extends State<AddExpensePage> {
     'Miscellaneous'
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    if (widget.expenseData != null) {
-      _nameController.text = widget.expenseData!['name'];
-      _amountController.text = widget.expenseData!['amount'].toString();
-      _categoryController.text = widget.expenseData!['category'];
-    }
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   if (widget.expenseData != null) {
+  //     _nameController.text = widget.expenseData!['name'];
+  //     _amountController.text = widget.expenseData!['amount'].toString();
+  //     _categoryController.text = widget.expenseData!['category'];
+  //   }
+  // }
 
   // void _saveExpense() {
   //   if (_formKey.currentState?.validate() ?? false) {
@@ -155,6 +156,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
           )
         ],
       ),
+      bottomNavigationBar: BottomBar(),
     );
   }
 

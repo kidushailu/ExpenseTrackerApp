@@ -39,21 +39,25 @@ class _CategortInfoState extends State<CategoryInfo> {
   // title, and a list of the top categories.
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      Text(
-        "Spending Analyzer",
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      ),
-      Container(
-          height: 320,
-          width: 320,
-          child: Padding(
-              padding: const EdgeInsets.all(1.0), child: _buildPieChart())),
-      Text(
-        "Top Categories",
-        textAlign: TextAlign.left,
-      )
-    ]);
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey, width: 2),
+          borderRadius: BorderRadius.circular(10)),
+      width: 350,
+      height: 400,
+      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Text(
+          "Spending Analyzer",
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Container(width: 300, height: 300, child: _buildPieChart()),
+      ]),
+    );
   }
 
   // Widget method to create the pie chart

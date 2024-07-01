@@ -20,7 +20,6 @@ class DashBoardButton extends StatelessWidget {
         },
         child: Icon(
           icon,
-          color: Colors.green,
         ),
         style: ElevatedButton.styleFrom(
             minimumSize: Size(50, 50),
