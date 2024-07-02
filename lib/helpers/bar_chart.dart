@@ -2,60 +2,74 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import '../database_helper.dart';
 
+// Define a StatefulWidget to represent the daily expense chart
 class DailyExpenseChart extends StatefulWidget {
   @override
   _DailyExpenseChartState createState() => _DailyExpenseChartState();
 }
 
+// Define the state for the DailyExpenseChart widget
 class _DailyExpenseChartState extends State<DailyExpenseChart> {
-  List<double> dailyExpenses = [];
+  List<double> dailyExpenses = []; // List to store daily expenses
 
   @override
   void initState() {
     super.initState();
-    _fetchExpenses();
+    _fetchExpenses(); // Fetch expenses when the widget is initialized
   }
 
+  // Asynchronously fetch expenses from the database
   Future<void> _fetchExpenses() async {
-    final dbHelper = DatabaseHelper();
-    final expenses = await dbHelper.getExpenses();
+    final dbHelper =
+        DatabaseHelper(); // Create an instance of the database helper
+    final expenses =
+        await dbHelper.getExpenses(); // Get expenses from the database
     setState(() {
-      dailyExpenses = _calculateDailyExpenses(expenses);
+      dailyExpenses = _calculateDailyExpenses(
+          expenses); // Calculate daily expenses and update state
     });
   }
 
+  // Calculate daily expenses from the list of expenses fetched from the database
   List<double> _calculateDailyExpenses(List<Map<String, dynamic>> expenses) {
-    List<double> dailyExpenses = List.generate(7, (_) => 0.0);
+    List<double> dailyExpenses = List.generate(
+        7,
+        (_) =>
+            0.0); // Initialize a list with 7 zeros (one for each day of the week)
     for (var expense in expenses) {
-      DateTime date = _parseDate(expense['date']);
-      double amount = expense['amount'];
+      DateTime date =
+          _parseDate(expense['date']); // Parse the date from the expense record
+      double amount =
+          expense['amount']; // Get the amount from the expense record
       int dayOfWeek =
           date.weekday - 1; // Convert to 0-based index (Mon=0, Sun=6)
-      dailyExpenses[dayOfWeek] += amount;
+      dailyExpenses[dayOfWeek] +=
+          amount; // Add the amount to the corresponding day of the week
     }
     return dailyExpenses;
   }
 
+  // Parse a date string in the format MM/DD/YYYY and return a DateTime object
   DateTime _parseDate(String date) {
-    List<String> parts = date.split('/');
-    int month = int.parse(parts[0]);
-    int day = int.parse(parts[1]);
-    int year = int.parse(parts[2]);
-    return DateTime(year, month, day);
+    List<String> parts = date.split('/'); // Split the date string into parts
+    int month = int.parse(parts[0]); // Parse the month
+    int day = int.parse(parts[1]); // Parse the day
+    int year = int.parse(parts[2]); // Parse the year
+    return DateTime(year, month, day); // Create and return a DateTime object
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      const Text(
-        "Daily Expenses Chart",
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        textAlign: TextAlign.center,
-      ),
-      const SizedBox(
-        height: 10,
-      ),
-      Container(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          "Daily Expenses Chart",
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 10),
+        Container(
           alignment: Alignment.center,
           height: 300,
           width: 300,
@@ -65,13 +79,15 @@ class _DailyExpenseChartState extends State<DailyExpenseChart> {
                   textAlign: TextAlign.center,
                 )
               : _buildBarChart(
-                  dailyExpenses, Theme.of(context).primaryColorLight)),
-    ]);
+                  dailyExpenses, Theme.of(context).primaryColorLight),
+        ),
+      ],
+    );
   }
 }
 
+// Function to build a bar chart using the FLChart library
 Widget _buildBarChart(List<double> data, Color color) {
-  // final List<double> dailyExpenses = [5, 10, 7, 12, 9, 5, 15]; // Example data
   if (data.isEmpty) {
     return Center(child: Text("No data."));
   }
@@ -79,8 +95,10 @@ Widget _buildBarChart(List<double> data, Color color) {
   return BarChart(
     BarChartData(
       alignment: BarChartAlignment.spaceAround,
-      maxY: data.isNotEmpty ? data.reduce((a, b) => a > b ? a : b) + 5 : 20,
-      barTouchData: BarTouchData(enabled: false),
+      maxY: data.isNotEmpty
+          ? data.reduce((a, b) => a > b ? a : b) + 5
+          : 20, // Set the max Y value for the chart
+      barTouchData: BarTouchData(enabled: false), // Disable touch interactions
       titlesData: FlTitlesData(
         topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
         rightTitles:
@@ -141,9 +159,7 @@ Widget _buildBarChart(List<double> data, Color color) {
           ),
         ),
       ),
-      borderData: FlBorderData(
-        show: false,
-      ),
+      borderData: FlBorderData(show: false),
       barGroups: data
           .asMap()
           .entries
