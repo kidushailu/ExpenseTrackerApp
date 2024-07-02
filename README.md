@@ -9,7 +9,7 @@ Our Expense Tracker app aims to simplify and enhance the way users manage their 
 - Expense Reminders: Schedule reminders for recurring expenses like rent, subscriptions, or utility bills.
 - Goal Setting: Enable users to set savings goals or specific financial targets, with progress tracking and milestones.
 
-### Demo
+### Presentation and Demo
 [Youtube](https://youtu.be/BRABVYuX-lc?si=gGonOTqvWXKMAMAn)
 
 ## Installation
