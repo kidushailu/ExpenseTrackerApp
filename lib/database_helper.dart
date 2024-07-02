@@ -57,6 +57,10 @@ class DatabaseHelper {
         amount REAL
       )
       ''');
+    await db.insert(
+      'expenses',
+      {'name': 'gas', 'category': 'Gas', 'amount': 20, 'date': '07/01/2024'},
+    );
   }
 
   Future<int> insertUser(Map<String, dynamic> user) async {
